@@ -14,6 +14,10 @@
 
 - https://alexhedley.github.io/terminal-dashboard -->
 
+## WIP
+
+![2](docs/wip/wip_2.png "2")
+
 ## docs
 
 - [docs](docs/README.md)

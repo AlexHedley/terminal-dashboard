@@ -12,16 +12,75 @@ namespace Terminal.Dashboard
             //ColumnsTest();
             //TableTest();
 
-            Panel1();
-            Panel2();
-            Panel3();
-            Panel4();
-            Panel5();
+            CreateDashboard();
 
             Console.ReadLine();
         }
 
-        static void Panel1()
+        static void CreateDashboard()
+        {
+            var panel1 = Panel1();
+            var panel2 = Panel2();
+            var panel3 = Panel3();
+            var panel4 = Panel4();
+            var panel5 = Panel5();
+
+            // Create the layout
+            var layout1 = new Layout("Row1")
+                .SplitColumns(
+                    new Layout("Left")
+                        .SplitRows(
+                            new Layout("Top"),
+                            new Layout("Bottom")),
+                    new Layout("Right"));
+
+            // Update the left column
+            //layout["Left"].Update(
+            //    new Panel(
+            //        Align.Center(
+            //            new Markup("Hello [blue]World![/]"),
+            //            VerticalAlignment.Middle))
+            //        .Expand());
+            layout1["Top"].Update(
+                new Panel(panel1)
+                    .Expand());
+
+            layout1["Bottom"].Update(
+                new Panel(panel2)
+                    .Expand());
+
+            layout1["Right"].Update(
+                new Panel(panel3)
+                    .Expand());
+
+            //// Render the layout
+            //AnsiConsole.Write(layout1);
+
+            var layout2 = new Layout("Row2")
+                .SplitColumns(
+                    new Layout("Left"),
+                    new Layout("Right"));
+
+            layout2["Left"].Update(
+                new Panel(panel4)
+                    .Expand());
+
+            layout2["Right"].Update(
+                new Panel(panel5)
+                    .Expand());
+
+            var rows = new Rows(
+                layout1,
+                layout2
+            );
+
+            //// Render the layout
+            //AnsiConsole.Write(layout2);
+
+            AnsiConsole.Write(rows);
+        }
+
+        static Panel Panel1()
         {
             /// ----- ----- ----- ----- -----
             /// Grid
@@ -59,11 +118,13 @@ namespace Terminal.Dashboard
             // Sets the expand property
             panel.Expand = true;
 
-            // Render the panel
-            AnsiConsole.Write(panel);
+            //// Render the panel
+            //AnsiConsole.Write(panel);
+
+            return panel;
         }
 
-        static void Panel2()
+        static Panel Panel2()
         {
             /// ----- ----- ----- ----- -----
             /// Grid
@@ -101,11 +162,13 @@ namespace Terminal.Dashboard
             // Sets the expand property
             panel.Expand = true;
 
-            // Render the panel
-            AnsiConsole.Write(panel);
+            //// Render the panel
+            //AnsiConsole.Write(panel);
+
+            return panel;
         }
 
-        static void Panel3()
+        static Panel Panel3()
         {
             /// ----- ----- ----- ----- -----
             /// Grid
@@ -142,11 +205,13 @@ namespace Terminal.Dashboard
             // Sets the expand property
             panel.Expand = true;
 
-            // Render the panel
-            AnsiConsole.Write(panel);
+            //// Render the panel
+            //AnsiConsole.Write(panel);
+
+            return panel;
         }
 
-        static void Panel4()
+        static Panel Panel4()
         {
             /// ----- ----- ----- ----- -----
             /// Grid
@@ -193,11 +258,13 @@ namespace Terminal.Dashboard
             // Sets the expand property
             panel.Expand = true;
 
-            // Render the panel
-            AnsiConsole.Write(panel);
+            //// Render the panel
+            //AnsiConsole.Write(panel);
+
+            return panel;
         }
 
-        static void Panel5()
+        static Panel Panel5()
         {
             /// ----- ----- ----- ----- -----
             /// Grid
@@ -228,8 +295,10 @@ namespace Terminal.Dashboard
             // Sets the expand property
             panel.Expand = true;
 
-            // Render the panel
-            AnsiConsole.Write(panel);
+            //// Render the panel
+            //AnsiConsole.Write(panel);
+            
+            return panel;
         }
 
         #region Testing
