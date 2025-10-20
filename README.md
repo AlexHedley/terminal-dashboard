@@ -2,6 +2,8 @@
 
 > **terminal dashboard** is a scriptable terminal dashboard.
 
+Built with [Spectre.Console](https://spectreconsole.net)
+
 [![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)](https://docs.microsoft.com/dotnet/csharp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=for-the-badge)](LICENSE) <!-- https://opensource.org/licenses/MIT -->
 
@@ -21,6 +23,7 @@
 ## docs
 
 - [docs](docs/README.md)
+- [Resources](resources/README.md)
 
 ## src
 
