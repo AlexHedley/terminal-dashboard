@@ -8,8 +8,9 @@ public class Tests
     }
 
     [Test]
-    public void Test1()
+    public void Constants_IsStaticClass()
     {
-        Assert.Pass();
+        var type = typeof(Constants);
+        Assert.That(type.IsAbstract && type.IsSealed, Is.True);
     }
 }
