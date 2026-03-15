@@ -43,4 +43,27 @@ public class CircleCI
 
         return panel;
     }
+
+    public static Panel CreateCircleCISamplePanel()
+    {
+        var grid = new Grid();
+        grid.AddColumn(); // Pipeline #
+        grid.AddColumn(); // Status
+        grid.AddColumn(); // Triggered by
+        grid.AddColumn(); // Commit message
+
+        grid.AddRow("[yellow]#4072  [/]", "[yellow]running   [/]", "joshdholtz", "Version bump to 2.199.0");
+        grid.AddRow("[yellow]#4071  [/]", "[red]failed    [/]",  "joshdholtz", "I'm not winning tonight");
+        grid.AddRow("[yellow]#4070  [/]", "[green]success   [/]", "joshdholtz", "Fix all the things");
+        grid.AddRow("[yellow]#4069  [/]", "[green]success   [/]", "joshdholtz", "Update dependencies");
+        grid.AddRow("[yellow]#4063  [/]", "[green]success   [/]", "joshdholtz", "Initial commit");
+
+        var rows = new Rows(grid);
+
+        var panel = new Panel(rows);
+        panel.Header = new PanelHeader(" CircleCI Workflows - github/joshdholtz/fastlane ");
+        panel.Border = BoxBorder.Square;
+
+        return panel;
+    }
 }
