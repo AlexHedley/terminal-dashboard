@@ -1,0 +1,21 @@
+meta {
+  name: Pipelines
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://circleci.com/api/v2/project/:vcs/:org/:repo/pipeline
+  body: none
+  auth: none
+}
+
+params:path {
+  vcs: github
+  org: AlexHedley
+  repo: terminal-dashboard
+}
+
+headers {
+  Circle-Token: {{CIRCLECI_API_TOKEN}}
+}

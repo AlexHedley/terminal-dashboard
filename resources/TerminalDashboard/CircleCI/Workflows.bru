@@ -1,0 +1,19 @@
+meta {
+  name: Workflows
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://circleci.com/api/v2/pipeline/:pipeline_id/workflow
+  body: none
+  auth: none
+}
+
+params:path {
+  pipeline_id: pipeline-id-here
+}
+
+headers {
+  Circle-Token: {{CIRCLECI_API_TOKEN}}
+}
