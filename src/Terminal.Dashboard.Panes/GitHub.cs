@@ -53,42 +53,46 @@ public class GitHub
         return panel;
     }
 
-    public static async Task<Panel> CreateGitHubPullRequestsPanel(string org, string repo)
+    public static async Task<Panel> CreateGitHubPullRequestsPanel(string org, string repo, bool showUsername = false, bool showInteractions = false)
     {
         // ----- ----- ----- ----- -----
         // Grid
         var grid = new Grid();
 
         // Add columns 
-        grid.AddColumn();
-        grid.AddColumn();
-        grid.AddColumn();
-        
-        // Add header row 
-        // No need
+        grid.AddColumn(); // PR Number
+        grid.AddColumn(); // Age
+        if (showInteractions) grid.AddColumn(); // Interactions
+        if (showUsername) grid.AddColumn(); // Username
+        grid.AddColumn(); // Title
+
         var response = await GitHubHelper.GetPullRequests(org, repo);
         foreach (var pullRequest in response)
         {
-            var prNum =  pullRequest.Number;
+            var prNum = pullRequest.Number;
             var age = pullRequest.CreatedAt.Humanize();
             var prTitle = pullRequest.Title;
-            
-            // grid.AddRow(new string[] { "[gold3_1]#192[/]", "([deepskyblue4]197d ago[/])", "Adding use_system_scm optio" });
-            // grid.AddRow(new string[] { "....", "(....)", "...." });
-            grid.AddRow(new string[] { $"[gold3_1]#{prNum}[/]", $"([deepskyblue4]{age}[/])", prTitle });
+
+            var rowValues = new List<string>
+            {
+                $"[gold3_1]#{prNum}[/]",
+                $"([deepskyblue4]{age}[/])"
+            };
+
+            if (showInteractions)
+            {
+                var interactions = pullRequest.Comments;
+                rowValues.Add($"[red]{interactions}[/]");
+            }
+
+            if (showUsername)
+            {
+                rowValues.Add($"[mediumpurple2]{pullRequest.User.Login}[/]");
+            }
+
+            rowValues.Add(prTitle);
+            grid.AddRow(rowValues.ToArray());
         }
-        
-        // var coverage = new Rows(
-        //     new Text("xcov"),
-        //     new Text("(1 out of 10)")
-        // );
-        //
-        // var rows = new Rows(
-        //     new Text(""),
-        //     coverage,
-        //     new Text(""),
-        //     grid
-        // );
 
         var rows = new Rows(grid);
 
@@ -97,8 +101,6 @@ public class GitHub
         var panel = new Panel(rows);
         panel.Header = new PanelHeader($"4 - Open PRs - {org}/{repo}");
         panel.Border = BoxBorder.Square;
-        // panel.Padding = new Padding(2, 2, 2, 2);
-        // panel.Expand = true;
 
         return panel;
     }
@@ -150,7 +152,6 @@ public class GitHub
         grid.AddColumn(); // Issue #
         grid.AddColumn(); // Age
         grid.AddColumn(); // Title
-        // grid.AddColumn(); // Desc
 
         // Add header row 
         // No need
@@ -160,7 +161,6 @@ public class GitHub
             var num = issue.Number;
             var title = issue.Title;
             var age = issue.CreatedAt.Humanize();
-            // var desc = issue.Body.Split(Environment.NewLine)[0];
             
             grid.AddRow(new string[] { $"[gold3_1]#{num}[/]", $"([deepskyblue4]{age}[/])", title });
         }
@@ -172,9 +172,65 @@ public class GitHub
         var panel = new Panel(rows);
         panel.Header = new PanelHeader($"5 - Issues - {org}/{repo}");
         panel.Border = BoxBorder.Square;
-        // panel.Padding = new Padding(2, 2, 2, 2);
-        // panel.Expand = true;
 
         return panel;
     }
-}
+
+    // https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests
+    public static async Task<Panel> CreateGitHubSearchPanel(string org, string? repo, string query, bool showRepo = true, bool showUsername = false, bool showInteractions = false)
+    {
+        // ----- ----- ----- ----- -----
+        // Grid
+        var grid = new Grid();
+
+        // Add columns
+        if (showRepo) grid.AddColumn(); // Repo
+        grid.AddColumn(); // Number
+        grid.AddColumn(); // Age
+        if (showInteractions) grid.AddColumn(); // Interactions
+        if (showUsername) grid.AddColumn(); // Username
+        grid.AddColumn(); // Title
+
+        var response = await GitHubHelper.SearchIssues(org, repo, query);
+        foreach (var item in response.Items)
+        {
+            var num = item.Number;
+            var title = item.Title;
+            var age = item.CreatedAt.Humanize();
+
+            var rowValues = new List<string>();
+
+            if (showRepo)
+            {
+                var repoName = item.Repository?.Name ?? string.Empty;
+                rowValues.Add($"[grey]{repoName}[/]");
+            }
+
+            rowValues.Add($"[gold3_1]#{num}[/]");
+            rowValues.Add($"([deepskyblue4]{age}[/])");
+
+            if (showInteractions)
+            {
+                rowValues.Add($"[red]{item.Comments}[/]");
+            }
+
+            if (showUsername)
+            {
+                rowValues.Add($"[mediumpurple2]{item.User?.Login}[/]");
+            }
+
+            rowValues.Add(title);
+            grid.AddRow(rowValues.ToArray());
+        }
+
+        var rows = new Rows(grid);
+
+        // ----- ----- ----- ----- -----
+        // Panel
+        var panel = new Panel(rows);
+        var repoLabel = string.IsNullOrEmpty(repo) ? org : $"{org}/{repo}";
+        panel.Header = new PanelHeader($"Search - {repoLabel}: {query}");
+        panel.Border = BoxBorder.Square;
+
+        return panel;
+    }}
