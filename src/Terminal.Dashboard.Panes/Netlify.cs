@@ -6,6 +6,30 @@ namespace Terminal.Dashboard.Panes;
 
 public class Netlify
 {
+    public static Panel CreateNetlifyDeploysSamplePanel()
+    {
+        var grid = new Grid();
+
+        grid.AddColumn(); // Context
+        grid.AddColumn(); // State
+        grid.AddColumn(); // Branch@Commit
+        grid.AddColumn(); // Age
+
+        grid.AddRow(new string[] { "[green]Production Deploy[/]",    "[grey](ready)[/]",     "[cyan]main@a1b2c3d[/]",    "([deepskyblue4]2 minutes ago[/])" });
+        grid.AddRow(new string[] { "[green]Deploy Preview - #42[/]", "[grey](ready)[/]",     "[cyan]feature@e4f5a6b[/]", "([deepskyblue4]15 minutes ago[/])" });
+        grid.AddRow(new string[] { "[yellow]Branch Deploy[/]",       "[grey](building)[/]",  "[cyan]staging@7c8d9e0[/]", "([deepskyblue4]an hour ago[/])" });
+        grid.AddRow(new string[] { "[red]Production Deploy[/]",      "[grey](error)[/]",     "[cyan]main@f1a2b3c[/]",    "([deepskyblue4]3 hours ago[/])" });
+        grid.AddRow(new string[] { "[grey]Deploy Preview - #39[/]",  "[grey](cancelled)[/]", "[cyan]fix@4d5e6f7[/]",     "([deepskyblue4]5 hours ago[/])" });
+
+        var rows = new Rows(grid);
+
+        var panel = new Panel(rows);
+        panel.Header = new PanelHeader(" Deploys - sample-site ");
+        panel.Border = BoxBorder.Square;
+
+        return panel;
+    }
+
     public static async Task<Panel> CreateNetlifyDeploysPanel(string siteId)
     {
         var deploys = await NetlifyHelper.GetDeploys(siteId);
