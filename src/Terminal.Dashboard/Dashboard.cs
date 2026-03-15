@@ -7,8 +7,17 @@ public static class Dashboard
 {
     public static async Task CreateDashboard()
     {
-        // var panel1 = Panel1();
-        var panel1 = new Panel("");
+        var panel1 = WorldClock.CreateWorldClockPanel(
+            new Dictionary<string, string>
+            {
+                { "New York",  "America/New_York" },
+                { "London",    "Europe/London" },
+                { "Tokyo",     "Asia/Tokyo" },
+                { "Sydney",    "Australia/Sydney" },
+                { "UTC",       "UTC" }
+            },
+            title: "World Clock",
+            sortOrder: WorldClockSortOrder.Natural);
         var panel2 = await GitHub.CreateGitHubPullRequestsStatsPanel("AlexHedley", "Utility-Blazor");
         var panel3 = await GitHub.CreateGitHubReleasesPanel("AlexHedley", "nocco");
         var panel4 = await GitHub.CreateGitHubPullRequestsPanel("AlexHedley", "Utility-Blazor");
