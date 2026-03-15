@@ -13,6 +13,7 @@ public static class Dashboard
         var panel3 = await GitHub.CreateGitHubReleasesPanel("AlexHedley", "nocco");
         var panel4 = await GitHub.CreateGitHubPullRequestsPanel("AlexHedley", "Utility-Blazor");
         var panel5 = await GitHub.CreateGitHubIssuesPanel("AlexHedley", "Utility-Blazor");
+        var panel6 = Netlify.CreateNetlifyDeploysSamplePanel();
             
         var layout1 = new Layout("Row1")
             .SplitColumns(
@@ -49,9 +50,13 @@ public static class Dashboard
             panel5.Expand()
         );
 
+        var layout3 = new Layout("Row3");
+        layout3.Update(panel6.Expand());
+
         var rows = new Rows(
             layout1,
-            layout2
+            layout2,
+            layout3
         );
             
         AnsiConsole.Write(rows);
